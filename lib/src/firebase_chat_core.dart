@@ -312,7 +312,7 @@ class FirebaseChatCore {
   /// Sends a message to the Firestore. Accepts any partial message and a
   /// room ID. If arbitraty data is provided in the [partialMessage]
   /// does nothing.
-  void sendMessage(dynamic partialMessage, String roomId) async {
+  sendMessage(dynamic partialMessage, String roomId) async {
     if (firebaseUser == null) return;
 
     types.Message? message;
@@ -321,12 +321,14 @@ class FirebaseChatCore {
       message = types.CustomMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
         id: '',
+        status: types.Status.delivered,
         partialCustom: partialMessage,
       );
     } else if (partialMessage is types.PartialFile) {
       message = types.FileMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
         id: '',
+        status: types.Status.delivered,
         partialFile: partialMessage,
       );
     } else if (partialMessage is types.PartialImage) {
@@ -334,13 +336,14 @@ class FirebaseChatCore {
         author: types.User(id: firebaseUser!.uid),
         id: '',
         partialImage: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialText) {
       message = types.TextMessage.fromPartial(
-        author: types.User(id: firebaseUser!.uid),
-        id: '',
-        partialText: partialMessage,
-      );
+          author: types.User(id: firebaseUser!.uid),
+          id: '',
+          partialText: partialMessage,
+          status: types.Status.delivered);
     }
 
     if (message != null) {
@@ -354,6 +357,7 @@ class FirebaseChatCore {
           .collection('${config.roomsCollectionName}/$roomId/messages')
           .add(messageMap);
     }
+    return message;
   }
 
   /// Updates a message in the Firestore. Accepts any message and a
@@ -376,7 +380,7 @@ class FirebaseChatCore {
 
   /// Updates a room in the Firestore. Accepts any room.
   /// Room will probably be taken from the [rooms] stream.
-  void updateRoom(types.Room room) async {
+  updateRoom(types.Room room) async {
     if (firebaseUser == null) return;
 
     final roomMap = room.toJson();
