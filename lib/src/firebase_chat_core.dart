@@ -441,4 +441,13 @@ class FirebaseChatCore {
           ),
         );
   }
+
+  Future<types.Room?> getRoom(String clientId) async {
+    var data = await getFirebaseFirestore()
+        .collection(config.roomsCollectionName)
+        .where('userIds', arrayContains: [firebaseUser!.uid, clientId]).get();
+    if (data.docs.isEmpty) return null;
+    var map = data.docs.first.data();
+    return types.Room.fromJson(map);
+  }
 }
