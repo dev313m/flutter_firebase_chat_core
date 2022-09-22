@@ -316,7 +316,6 @@ class FirebaseChatCore {
     if (firebaseUser == null) return;
 
     types.Message? message;
-
     if (partialMessage is types.PartialCustom) {
       message = types.CustomMessage.fromPartial(
         author: types.User(id: firebaseUser!.uid),
