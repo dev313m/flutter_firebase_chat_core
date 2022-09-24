@@ -397,9 +397,11 @@ class FirebaseChatCore {
 
     roomMap['lastMessages'] = room.lastMessages?.map((m) {
       final messageMap = m.toJson();
-
-      messageMap.removeWhere(
-          (key, value) => key == 'author' || key == 'createdAt' || key == 'id');
+      messageMap.removeWhere((key, value) =>
+          key == 'author' ||
+          key == 'createdAt' ||
+          key == 'id' ||
+          key == 'updatedAt');
 
       messageMap['authorId'] = m.author.id;
 
