@@ -382,7 +382,7 @@ class FirebaseChatCore {
   /// Room will probably be taken from the [rooms] stream.
   updateRoom(types.Room room, bool withUpdatedAt) async {
     if (firebaseUser == null) return;
-
+    var updatedAt = room.updatedAt;
     final roomMap = room.toJson();
     roomMap.removeWhere((key, value) =>
         key == 'createdAt' ||
@@ -407,7 +407,10 @@ class FirebaseChatCore {
 
       return messageMap;
     }).toList();
-    if (withUpdatedAt) roomMap['updatedAt'] = FieldValue.serverTimestamp();
+    if (withUpdatedAt)
+      roomMap['updatedAt'] = FieldValue.serverTimestamp();
+    else
+      roomMap['updatedAt'] = updatedAt;
     roomMap['userIds'] = room.users.map((u) => u.id).toList();
 
     await getFirebaseFirestore()
