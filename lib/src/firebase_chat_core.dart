@@ -417,10 +417,9 @@ class FirebaseChatCore {
       return messageMap;
     }).toList();
 
-    if (withUpdatedAt)
-      roomMap['updatedAt'] = FieldValue.serverTimestamp();
-    else
-      roomMap['updatedAt'] = DateTime.fromMillisecondsSinceEpoch(updatedAt!);
+    if (withUpdatedAt) roomMap['updatedAt'] = FieldValue.serverTimestamp();
+    // else
+    //   roomMap['updatedAt'] = DateTime.fromMillisecondsSinceEpoch(updatedAt!);
     roomMap['userIds'] = room.users.map((u) => u.id).toList();
 
     await getFirebaseFirestore()
