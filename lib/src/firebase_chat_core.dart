@@ -388,7 +388,9 @@ class FirebaseChatCore {
   /// Updates a room in the Firestore. Accepts any room.
   /// Room will probably be taken from the [rooms] stream.
   updateRoom(
-      types.Room room, bool withUpdatedAt, bool withLastMessageUpdate) async {
+    types.Room room,
+    bool withUpdatedAt,
+  ) async {
     if (firebaseUser == null) return;
     var updatedAt = room.updatedAt;
     final roomMap = room.toJson();
