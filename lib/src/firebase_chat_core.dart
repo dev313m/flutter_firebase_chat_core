@@ -378,6 +378,13 @@ class FirebaseChatCore {
         .update(messageMap);
   }
 
+  // updateLastMessageSeen(types.Room room) async {
+  //   await getFirebaseFirestore()
+  //       .collection(config.roomsCollectionName)
+  //       .doc(room.id)
+  //       .update({'lastMessageStatus': 'seen', 'seenDate'});
+  // }
+
   /// Updates a room in the Firestore. Accepts any room.
   /// Room will probably be taken from the [rooms] stream.
   updateRoom(
@@ -395,20 +402,19 @@ class FirebaseChatCore {
       roomMap['imageUrl'] = null;
       roomMap['name'] = null;
     }
-    if (withLastMessageUpdate) {
-      roomMap['lastMessages'] = room.lastMessages?.map((m) {
-        final messageMap = m.toJson();
-        messageMap.removeWhere((key, value) =>
-            key == 'author' ||
-            key == 'createdAt' ||
-            key == 'id' ||
-            key == 'updatedAt');
+    roomMap['lastMessages'] = room.lastMessages?.map((m) {
+      final messageMap = m.toJson();
+      messageMap.removeWhere((key, value) =>
+          key == 'author' ||
+          key == 'createdAt' ||
+          key == 'id' ||
+          key == 'updatedAt');
 
-        messageMap['authorId'] = m.author.id;
+      messageMap['authorId'] = m.author.id;
 
-        return messageMap;
-      }).toList();
-    }
+      return messageMap;
+    }).toList();
+
     if (withUpdatedAt)
       roomMap['updatedAt'] = FieldValue.serverTimestamp();
     else
