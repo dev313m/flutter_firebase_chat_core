@@ -98,7 +98,6 @@ class FirebaseChatCore {
   /// custom data.
   Future<types.Room> createRoom(
     types.User otherUser, {
-    required String clientToken,
     Map<String, dynamic>? metadata,
   }) async {
     final fu = firebaseUser;
@@ -142,7 +141,6 @@ class FirebaseChatCore {
         .add({
       'createdAt': FieldValue.serverTimestamp(),
       'imageUrl': null,
-      'clientToken': clientToken,
       'metadata': metadata,
       'name': null,
       'type': types.RoomType.direct.toShortString(),
@@ -429,13 +427,6 @@ class FirebaseChatCore {
         .collection(config.roomsCollectionName)
         .doc(room.id)
         .update(roomMap);
-  }
-
-  Future addWorkerTokenToRoom(types.Room room, String workerToken) async {
-    await getFirebaseFirestore()
-        .collection(config.roomsCollectionName)
-        .doc(room.id)
-        .update({'workerToken': workerToken});
   }
 
   /// Returns a stream of all users from Firebase
