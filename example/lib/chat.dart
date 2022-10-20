@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
           uri: uri,
         );
 
-        FirebaseChatCore.instance.sendMessage(message, widget.room.id);
+        FirebaseChatCore.instance.sendMessage(message, widget.room.id, '');
         _setAttachmentUploading(false);
       } finally {
         _setAttachmentUploading(false);
@@ -131,10 +131,7 @@ class _ChatPageState extends State<ChatPage> {
           width: image.width.toDouble(),
         );
 
-        FirebaseChatCore.instance.sendMessage(
-          message,
-          widget.room.id,
-        );
+        FirebaseChatCore.instance.sendMessage(message, widget.room.id, '');
         _setAttachmentUploading(false);
       } finally {
         _setAttachmentUploading(false);
@@ -173,10 +170,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleSendPressed(types.PartialText message) {
-    FirebaseChatCore.instance.sendMessage(
-      message,
-      widget.room.id,
-    );
+    FirebaseChatCore.instance.sendMessage(message, widget.room.id, '');
   }
 
   void _setAttachmentUploading(bool uploading) {
